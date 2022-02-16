@@ -14,6 +14,8 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+from datetime import timedelta
+import os
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +27,19 @@ SECRET_KEY = 'django-insecure-q1!6n8q_9+w%!w3n0sq^tsx0moqne7+wvyk$ra9x^091@o194^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=200),
+}
 
 
 # Application definition
@@ -38,7 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'resume'
+    'resume',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -77,13 +92,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test',
+        'NAME': 'testapi',
         'USER': 'postgres',
-        'PASSWORD': 'Aa130258046790',
+        'PASSWORD': '123',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '4542',
 
     }
 }
@@ -122,8 +136,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
